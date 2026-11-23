@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>КТИТС-ИНФО — Панель администратора</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css?v=2">
+</head>
+<body>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M7 14h2M12 14h2M17 14h1M7 17h2M12 17h2"/></symbol>
+    <symbol id="i-alarm" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v5l3 2M5 3 2 6M19 3l3 3M9 2h6"/></symbol>
+    <symbol id="i-teacher" viewBox="0 0 24 24"><path d="m2 8 10-5 10 5-10 5L2 8Z"/><path d="M6 10v5c3 3 9 3 12 0v-5M22 8v7"/><circle cx="12" cy="19" r="2"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M5 3h14v18H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 7h7M8 11h7M8 15h5M8 19h7"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2Z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-4 2.8-6.5 6.5-6.5s6.5 2.5 6.5 6.5"/><circle cx="17" cy="9" r="2.6"/><path d="M17.5 13.7c2.4.5 4 2.4 4 5.3"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l-5-5 5-5M5 12h11"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0 4.5 4.5M12 4 7.5 8.5"/><path d="M4 16v3a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-3"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m0 0 4.5-4.5M12 16l-4.5-4.5"/><path d="M4 16v3a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l5 5v15H6V2Z"/><path d="M14 2v5h5M9 13h7M9 17h7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-restore" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 2 7M4 10V4M4 10h6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m5 19 5-5 3 3 3-3 3 3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 11v5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></symbol>
+    <symbol id="i-stairs" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="M13.5.5H9V5H5v4H.5v4.5h13V.5z"/></symbol>
+  </svg>
+
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <img src="../assets/logo.png" alt="Логотип МЦК-КТИТС">
+        <div>
+          <div class="sidebar__brand-name">КТИТС-ИНФО</div>
+          <div class="sidebar__brand-sub">панель администратора</div>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Разделы администрирования">
+        <p class="sidebar__label">Контент киоска</p>
+        <button class="nav-item is-on" data-section="schedule" data-role="schedule">
+          <svg class="icon"><use href="#i-calendar"/></svg>Расписание занятий
+        </button>
+        <button class="nav-item" data-section="practice" data-role="schedule">
+          <svg class="icon"><use href="#i-teacher"/></svg>Практика
+        </button>
+        <button class="nav-item" data-section="bells" data-role="schedule">
+          <svg class="icon"><use href="#i-alarm"/></svg>Расписание звонков
+        </button>
+        <button class="nav-item" data-section="teachers" data-role="content">
+          <svg class="icon"><use href="#i-teacher"/></svg>Преподаватели
+        </button>
+        <button class="nav-item" data-section="news" data-role="content">
+          <svg class="icon"><use href="#i-news"/></svg>Новости
+        </button>
+        <button class="nav-item" data-section="events" data-role="content">
+          <svg class="icon"><use href="#i-star"/></svg>Афиша событий
+        </button>
+        <button class="nav-item" data-section="map" data-role="content">
+          <svg class="icon"><use href="#i-map"/></svg>Карта этажей
+        </button>
+
+        <p class="sidebar__label">Система</p>
+        <button class="nav-item" data-section="roles" data-role="admin">
+          <svg class="icon"><use href="#i-users"/></svg>Пользователи и роли
+        </button>
+      </nav>
+
+      <div class="sidebar__foot">
+        <a class="nav-item" href="../index.html">
+          <svg class="icon"><use href="#i-monitor"/></svg>Открыть киоск
+        </a>
+        <button class="nav-item" id="logoutBtn">
+          <svg class="icon"><use href="#i-logout"/></svg>Выйти
+        </button>
+      </div>
+    </aside>
+
+    <button class="sidebar-overlay" id="sidebarOverlay" aria-label="Закрыть меню" hidden></button>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn topbar__menu" id="sidebarToggle" aria-label="Открыть меню" aria-expanded="false">
+          <svg class="icon"><use href="#i-news"/></svg>
+        </button>
+        <div>
+          <div class="topbar__crumb">Администрирование</div>
+          <h1 class="topbar__title" id="topbarTitle">Расписание занятий</h1>
+        </div>
+        <div class="topbar__spacer"></div>
+        <span class="topbar__date" id="topbarDate">—</span>
+        <div class="user-chip">
+          <span class="user-chip__avatar" id="userAvatar" aria-hidden="true">—</span>
+          <span>
+            <span class="user-chip__name" id="userName">Загрузка…</span><br>
+            <span class="user-chip__role" id="userRole">—</span>
+          </span>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <section class="section is-active" id="section-schedule" aria-labelledby="schedHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="schedHeadTitle">Расписание занятий</h2>
+              <p>Два способа обновления: вручную по строкам или загрузкой готового файла Excel — расписание подтянется автоматически.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--ghost" id="schedTemplateBtn">
+                <svg class="icon"><use href="#i-download"/></svg>Скачать шаблон
+              </button>
+              <button class="btn btn--primary" id="schedAddRow">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить пару
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__body">
+              <div class="toolbar" role="group" aria-label="Параметры расписания">
+                <div class="form-field">
+                  <label for="schedGroup">Группа</label>
+                  <select class="field" id="schedGroup">
+                    <option>ИС-31</option><option>ИС-32</option><option>СА-21</option><option>СКС-11</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="schedDay">День недели</label>
+                  <select class="field" id="schedDay">
+                    <option>Понедельник</option><option>Вторник</option><option>Среда</option>
+                    <option>Четверг</option><option>Пятница</option><option>Суббота</option>
+                  </select>
+                </div>
+                <div class="toolbar__spacer"></div>
+                <span class="badge badge--muted" id="schedState">Загрузка данных…</span>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table" id="schedTable">
+                <caption class="sr-only">Редактируемое расписание группы на день</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Время</th>
+                    <th scope="col">Предмет</th>
+                    <th scope="col">Преподаватель</th>
+                    <th scope="col">Аудитория</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="schedBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div>
+                <h3>Загрузка из Excel</h3>
+                <p>Файл полностью заменит расписание на выбранный период</p>
+              </div>
+            </div>
+            <div class="card__body">
+              <div class="dropzone" id="schedDrop" role="button" tabindex="0" aria-label="Загрузить файл расписания">
+                <svg class="icon"><use href="#i-upload"/></svg>
+                <span class="dropzone__title">Перетащите файл сюда или нажмите для выбора</span>
+                <span class="dropzone__note">Форматы .xlsx и .csv · колонки: группа, день, № пары, предмет, преподаватель, аудитория. Для каждой группы и дня из файла текущее расписание заменяется.</span>
+                <input type="file" id="schedFile" accept=".xlsx,.xls,.csv" hidden>
+              </div>
+              <div id="schedFileInfo" style="margin-top:14px"></div>
+            </div>
+          </div>
+
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Номер пары и время правятся прямо в таблице: можно поставить занятие, например, только ко второй паре. Новое время сохранится в расписание звонков и обновится у всех групп. Значок отмены помечает пару отменённой — на киоске она останется видна с пометкой. После правок нажмите «Сохранить», чтобы изменения ушли на киоск.</span>
+          </div>
+          <div class="section__actions">
+            <button class="btn btn--dark" id="schedSave">
+              <svg class="icon"><use href="#i-check"/></svg>Сохранить расписание
+            </button>
+            <button class="btn btn--ghost" id="schedReset">
+              <svg class="icon"><use href="#i-restore"/></svg>Отменить изменения
+            </button>
+          </div>
+        </section>
+
+        <section class="section" id="section-practice" aria-labelledby="practiceHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="practiceHeadTitle">Практика</h2>
+              <p>Блоки учебной практики, подгруппы, руководители и аудитории по каждой дате и паре.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="practiceAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить блок
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Группа</th>
+                    <th scope="col">Модуль</th>
+                    <th scope="col">Период</th>
+                    <th scope="col">Подгруппа</th>
+                    <th scope="col">Руководитель</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="practiceBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Нажмите «Добавить блок» или значок редактирования. В сетке заполните аудитории; пустые ячейки тоже сохраняются и участвуют в расписании киоска.</span>
+          </div>
+        </section>
+
+        <section class="section" id="section-bells" aria-labelledby="bellsHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="bellsHeadTitle">Расписание звонков</h2>
+              <p>Время пар и перемен. Для сокращённых дней включите режим — длительность пар уменьшится автоматически.</p>
+            </div>
+            <div class="section__actions">
+              <label class="switch">
+                <input type="checkbox" id="bellsShort">
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>Сокращённый день</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div class="tabs" role="tablist" aria-label="Тип дня">
+                <button class="tab is-on" data-bells="week" role="tab" aria-selected="true">Пн–Пт</button>
+                <button class="tab" data-bells="sat" role="tab" aria-selected="false">Суббота</button>
+              </div>
+              <button class="btn btn--ghost btn--sm" id="bellsAddRow">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить пару
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">№ пары</th>
+                    <th scope="col">Начало</th>
+                    <th scope="col">Конец</th>
+                    <th scope="col">Перемена</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="bellsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="hint hint--warn" id="bellsShortHint" hidden>
+            <svg class="icon"><use href="#i-clock"/></svg>
+            <span>Не забудьте сохранить — на киоске появится пометка о сокращённом дне.</span>
+          </div>
+          <div class="section__actions">
+            <button class="btn btn--dark" id="bellsSave">
+              <svg class="icon"><use href="#i-check"/></svg>Сохранить звонки
+            </button>
+            <button class="btn btn--ghost" id="bellsDefault">Вернуть стандартные</button>
+          </div>
+        </section>
+
+        <section class="section" id="section-teachers" aria-labelledby="teachHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="teachHeadTitle">Преподаватели</h2>
+              <p>Состав вкладки «Преподаватели» на киоске: карточки, фотографии, категории. Удалённые сотрудники сразу пропадают с киоска.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="teacherAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить преподавателя
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div class="tabs" role="tablist" aria-label="Категории сотрудников">
+                <button class="tab is-on" data-tcat="teachers" role="tab" aria-selected="true">Преподаватели</button>
+                <button class="tab" data-tcat="management" role="tab" aria-selected="false">Руководство</button>
+                <button class="tab" data-tcat="departments" role="tab" aria-selected="false">Отделения</button>
+                <button class="tab" data-tcat="itcube" role="tab" aria-selected="false">IT-CUBE</button>
+              </div>
+              <div class="input-icon" style="min-width:260px">
+                <svg class="icon"><use href="#i-search"/></svg>
+                <input class="field" type="search" id="teacherSearch" placeholder="Поиск по фамилии или предмету…" aria-label="Поиск преподавателя">
+              </div>
+            </div>
+            <div class="card__body">
+              <div class="staff-grid" id="teacherGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="section-news" aria-labelledby="newsHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="newsHeadTitle">Новости</h2>
+              <p>Публикации для раздела «Новости» киоска. Черновики видны только здесь, опубликованные — сразу на киоске.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="newsAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Новая публикация
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Обложка</th>
+                    <th scope="col">Заголовок</th>
+                    <th scope="col">Категория</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="newsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="section-events" aria-labelledby="eventsHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="eventsHeadTitle">Афиша событий</h2>
+              <p>Анонсы мероприятий: дата, место и описание. Прошедшие события автоматически уходят в архив на киоске.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="eventAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Новое событие
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Обложка</th>
+                    <th scope="col">Событие</th>
+                    <th scope="col">Дата и время</th>
+                    <th scope="col">Место</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="eventsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="section-map" aria-labelledby="mapHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="mapHeadTitle">Карта этажей</h2>
+              <p>Планировка, фоновые планы и маршрутная сеть киоска. Изменения координат сохраняются автоматически.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="mapRoomAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить помещение
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__body">
+              <div class="toolbar" role="group" aria-label="Параметры карты">
+                <div class="form-field">
+                  <label for="mapFloor">Этаж</label>
+                  <select class="field" id="mapFloor"></select>
+                </div>
+                <div class="tabs" role="tablist" aria-label="Режим редактора">
+                  <button class="tab is-on" id="mapModeRooms" role="tab" aria-selected="true">Помещения</button>
+                  <button class="tab" id="mapModeRoutes" role="tab" aria-selected="false">Маршрутная сеть</button>
+                </div>
+                <div class="form-field" id="mapNodeKindWrap" hidden>
+                  <label for="mapNodeKind">Новый узел</label>
+                  <select class="field" id="mapNodeKind">
+                    <option value="corridor">Коридор</option>
+                    <option value="entrance">Вход</option>
+                    <option value="stairs">Лестница</option>
+                    <option value="passage">Тёплый переход</option>
+                  </select>
+                </div>
+                <div class="toolbar__spacer"></div>
+                <span class="badge badge--muted" id="mapState">Загрузка данных…</span>
+              </div>
+            </div>
+
+            <div class="card__body map-underlay">
+              <div class="map-underlay__title">
+                <h3>Фоновая подложка</h3>
+                <p>JPG, PNG или WEBP до 5 МБ. Изображение размещается под помещениями.</p>
+              </div>
+              <div class="map-underlay__controls">
+                <input type="file" id="mapUnderlayFile" accept="image/jpeg,image/png,image/webp" hidden>
+                <button class="btn btn--ghost btn--sm" id="mapUnderlayUpload"><svg class="icon"><use href="#i-upload"/></svg>Загрузить</button>
+                <button class="btn btn--ghost btn--sm" id="mapUnderlayClear">Убрать</button>
+                <div class="form-field">
+                  <label for="mapUnderlayOpacity">Прозрачность <output id="mapUnderlayOpacityValue" for="mapUnderlayOpacity">35%</output></label>
+                  <input type="range" id="mapUnderlayOpacity" min="0" max="1" step="0.05" value="0.35">
+                </div>
+                <div class="form-field">
+                  <label for="mapUnderlayScale">Масштаб <output id="mapUnderlayScaleValue" for="mapUnderlayScale">100%</output></label>
+                  <input type="range" id="mapUnderlayScale" min="0.1" max="4" step="0.05" value="1">
+                </div>
+                <button class="btn btn--dark btn--sm" id="mapUnderlaySave"><svg class="icon"><use href="#i-check"/></svg>Сохранить подложку</button>
+              </div>
+              <p class="form-note" id="mapUnderlayPath">Подложка не задана</p>
+            </div>
+
+            <div class="card__body">
+              <div class="map-editor">
+                <svg id="mapSvg" viewBox="0 0 1240 720" role="img" aria-label="Схема этажа"></svg>
+              </div>
+              <p class="form-note" id="mapEditorHint" style="margin-top:10px">Потяните помещение или маркер на его границе. Координаты и размеры сохраняются автоматически.</p>
+            </div>
+          </div>
+
+          <div class="card" id="mapRoomCard" hidden>
+            <div class="card__head">
+              <div>
+                <h3 id="mapRoomTitle">Помещение</h3>
+                <p id="mapRoomKey"></p>
+              </div>
+              <button class="btn btn--danger-soft btn--sm" id="mapRoomDelete">
+                <svg class="icon"><use href="#i-trash"/></svg>Удалить помещение
+              </button>
+            </div>
+            <div class="card__body">
+              <div class="form-grid">
+                <div class="form-field form-field--full">
+                  <label for="mapRoomName">Название <span aria-hidden="true">*</span></label>
+                  <input class="field" type="text" id="mapRoomName" placeholder="Аудитория 305" required>
+                  <span class="field-error" data-error-for="mapRoomName"></span>
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomKeyInput">Код помещения <span aria-hidden="true">*</span></label>
+                  <input class="field" type="text" id="mapRoomKeyInput" placeholder="305 или stairs-w" required>
+                  <span class="field-error" data-error-for="mapRoomKeyInput"></span>
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomType">Тип</label>
+                  <select class="field" id="mapRoomType">
+                    <option value="aud">Учебная аудитория</option>
+                    <option value="service">Служба / помещение</option>
+                    <option value="stairs">Лестничная клетка</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomX">X <span class="label-note">от левого края</span></label>
+                  <input class="field" type="number" id="mapRoomX" min="0" max="1240" step="1">
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomY">Y <span class="label-note">от верхнего края</span></label>
+                  <input class="field" type="number" id="mapRoomY" min="0" max="720" step="1">
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomW">Ширина</label>
+                  <input class="field" type="number" id="mapRoomW" min="20" max="1240" step="1">
+                </div>
+                <div class="form-field">
+                  <label for="mapRoomH">Высота</label>
+                  <input class="field" type="number" id="mapRoomH" min="20" max="720" step="1">
+                </div>
+              </div>
+              <div class="section__actions" style="margin-top:16px">
+                <button class="btn btn--dark" id="mapRoomSave"><svg class="icon"><use href="#i-check"/></svg>Сохранить помещение</button>
+                <button class="btn btn--ghost" id="mapRoomClose">Закрыть</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="mapNodeCard" hidden>
+            <div class="card__head">
+              <div><h3>Узел маршрутной сети</h3><p id="mapNodeTitle"></p></div>
+              <button class="btn btn--danger-soft btn--sm" id="mapNodeDelete"><svg class="icon"><use href="#i-trash"/></svg>Удалить узел</button>
+            </div>
+            <div class="card__body">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="mapNodeType">Тип узла</label>
+                  <select class="field" id="mapNodeType">
+                    <option value="corridor">Коридор</option><option value="entrance">Вход</option>
+                    <option value="stairs">Лестница</option><option value="passage">Тёплый переход</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="mapNodeRoomKey">Код помещения <span class="label-note">необязательно</span></label>
+                  <input class="field" type="text" id="mapNodeRoomKey" placeholder="stairs-w">
+                </div>
+                <div class="form-field"><label for="mapNodeX">X</label><input class="field" type="number" id="mapNodeX" min="0" max="1240" step="1"></div>
+                <div class="form-field"><label for="mapNodeY">Y</label><input class="field" type="number" id="mapNodeY" min="0" max="720" step="1"></div>
+              </div>
+              <div class="section__actions" style="margin-top:16px">
+                <button class="btn btn--dark" id="mapNodeSave"><svg class="icon"><use href="#i-check"/></svg>Сохранить узел</button>
+                <button class="btn btn--ghost" id="mapNodeClose">Закрыть</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="mapEdgeCard" hidden>
+            <div class="card__head">
+              <div><h3>Ребро маршрутной сети</h3><p id="mapEdgeTitle"></p></div>
+              <button class="btn btn--danger-soft btn--sm" id="mapEdgeDelete"><svg class="icon"><use href="#i-trash"/></svg>Удалить ребро</button>
+            </div>
+          </div>
+
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Для лестниц УК используйте узлы типа «Лестница» с одинаковым кодом stairs-w или stairs-e на разных этажах. Тёплый переход между uk1 и lk1 образуют узлы типа «Тёплый переход».</span>
+          </div>
+        </section>
+
+        <section class="section" id="section-roles" aria-labelledby="rolesHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="rolesHeadTitle">Пользователи и роли</h2>
+              <p>Учётные записи сотрудников с доступом к панели. Роли ограничивают доступные разделы и API-действия.</p>
+            </div>
+            <div class="section__actions">
+              <button class="btn btn--primary" id="roleAdd">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить пользователя
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Сотрудник</th>
+                    <th scope="col">Логин</th>
+                    <th scope="col">Роль</th>
+                    <th scope="col">Доступные разделы</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="rolesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Роли: <b>Администратор</b> — полный доступ и управление пользователями; <b>Редактор расписания</b> — только расписания занятий и звонков; <b>Редактор контента</b> — преподаватели, новости и афиша.</span>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalTeacher" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTeacherTitle">
+      <div class="modal__head">
+        <h3 id="modalTeacherTitle">Добавить преподавателя</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <form id="teacherForm" novalidate>
+        <div class="modal__body">
+          <div class="form-field">
+            <label>Фотография <span class="label-note">jpg, png до 5 МБ</span></label>
+            <div class="photo-upload">
+              <span class="photo-upload__preview" id="teacherPhotoPreview">
+                <svg class="icon"><use href="#i-image"/></svg>
+              </span>
+              <div>
+                <button type="button" class="btn btn--ghost btn--sm" id="teacherPhotoBtn">
+                  <svg class="icon"><use href="#i-upload"/></svg>Загрузить фото
+                </button>
+                <input type="file" id="teacherPhoto" accept="image/*" hidden>
+                <p class="form-note" style="text-align:left;margin-top:6px">Квадратное фото отображается лучше всего</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="teacherName">ФИО <span aria-hidden="true">*</span></label>
+            <input class="field" type="text" id="teacherName" placeholder="Иванова Мария Рашитовна" required>
+            <span class="field-error" data-error-for="teacherName"></span>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="teacherPost">Предмет / должность <span aria-hidden="true">*</span></label>
+              <input class="field" type="text" id="teacherPost" placeholder="Математика" required>
+              <span class="field-error" data-error-for="teacherPost"></span>
+            </div>
+            <div class="form-field">
+              <label for="teacherCat">Категория</label>
+              <select class="field" id="teacherCat">
+                <option value="teachers">Преподаватели</option>
+                <option value="management">Руководство</option>
+                <option value="departments">Отделения</option>
+                <option value="itcube">IT-CUBE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="teacherQual">Квалификация <span class="label-note">для преподавателей</span></label>
+              <input class="field" type="text" id="teacherQual" placeholder="высшая / 1 / СЗД">
+            </div>
+            <div class="form-field">
+              <label for="teacherRoom">Аудитория</label>
+              <input class="field" type="text" id="teacherRoom" placeholder="305">
+            </div>
+            <div class="form-field form-field--full">
+              <label for="teacherHead">Заведующий отделением <span class="label-note">только для отделений</span></label>
+              <input class="field" type="text" id="teacherHead" placeholder="Фамилия Имя Отчество">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="teacherInfo">Дополнительно <span class="label-note">необязательно</span></label>
+            <input class="field" type="text" id="teacherInfo" placeholder="Служебное примечание">
+          </div>
+          <div class="auth-form__row">
+            <label class="check"><input type="checkbox" id="teacherActive" checked><span class="check__box" aria-hidden="true"></span><span>Показывать на киоске</span></label>
+            <label class="check"><input type="checkbox" id="teacherHeadFlag"><span class="check__box" aria-hidden="true"></span><span>Руководитель IT-CUBE</span></label>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn--primary">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalPost" hidden>
+    <div class="modal modal--wide" role="dialog" aria-modal="true" aria-labelledby="modalPostTitle">
+      <div class="modal__head">
+        <h3 id="modalPostTitle">Новая публикация</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <form id="postForm" novalidate>
+        <div class="modal__body">
+          <div class="form-field">
+            <label for="postTitle">Заголовок <span aria-hidden="true">*</span></label>
+            <input class="field" type="text" id="postTitle" placeholder="День открытых дверей в МЦК-КТИТС" required maxlength="120">
+            <span class="field-error" data-error-for="postTitle"></span>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="postDate" id="postDateLabel">Дата публикации</label>
+              <input class="field" type="date" id="postDate" required>
+            </div>
+            <div class="form-field" id="postCatWrap">
+              <label for="postCat">Категория</label>
+              <input class="field" type="text" id="postCat" list="postCatList" placeholder="События" required>
+              <datalist id="postCatList">
+                <option value="Учёба"></option><option value="События"></option><option value="Достижения"></option>
+                <option value="Объявления"></option><option value="Поступление"></option><option value="Абитуриентам"></option>
+              </datalist>
+            </div>
+            <div class="form-field" id="postTimeWrap" hidden>
+              <label for="postTime">Время начала</label>
+              <input class="field" type="time" id="postTime">
+            </div>
+            <div class="form-field" id="postPlaceWrap" hidden>
+              <label for="postPlace">Место проведения</label>
+              <input class="field" type="text" id="postPlace" placeholder="Актовый зал, 2 этаж">
+            </div>
+            <div class="form-field" id="postRoomWrap" hidden>
+              <label for="postRoom">Помещение на карте <span class="label-note">код: conf, 305, sport</span></label>
+              <input class="field" type="text" id="postRoom" placeholder="conf">
+            </div>
+            <div class="form-field" id="postStatusWrap">
+              <label for="postStatus">Статус</label>
+              <select class="field" id="postStatus">
+                <option value="published">Опубликовано</option>
+                <option value="draft">Черновик</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="postSummary">Краткий текст / анонс <span aria-hidden="true">*</span></label>
+            <textarea class="field" id="postSummary" style="min-height:90px" placeholder="Короткое описание для карточки…" required minlength="10" maxlength="5000"></textarea>
+            <span class="field-error" data-error-for="postSummary"></span>
+          </div>
+          <div class="form-field" id="postTextWrap">
+            <label for="postText">Полный текст <span class="label-note">необязательно</span></label>
+            <textarea class="field" id="postText" placeholder="Подробный текст публикации…" maxlength="10000"></textarea>
+            <div class="field-meta">
+              <span class="field-error" data-error-for="postText"></span>
+              <span id="postCounter">0 / 10000</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Обложка <span class="label-note">jpg, png до 5 МБ</span></label>
+            <div class="photo-upload">
+              <span class="photo-upload__preview photo-upload__preview--wide" id="postPhotoPreview">
+                <svg class="icon"><use href="#i-image"/></svg>
+              </span>
+              <div>
+                <button type="button" class="btn btn--ghost btn--sm" id="postPhotoBtn">
+                  <svg class="icon"><use href="#i-upload"/></svg>Загрузить обложку
+                </button>
+                <input type="file" id="postPhoto" accept="image/*" hidden>
+                <p class="form-note" style="text-align:left;margin-top:6px">Горизонтальное изображение 16:9</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn--primary" id="postSubmit">Опубликовать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalPractice" hidden>
+    <div class="modal modal--practice" role="dialog" aria-modal="true" aria-labelledby="modalPracticeTitle">
+      <div class="modal__head">
+        <h3 id="modalPracticeTitle">Добавить блок практики</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <form id="practiceForm" novalidate>
+        <div class="modal__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="practiceGroup">Группа <span aria-hidden="true">*</span></label>
+              <select class="field" id="practiceGroup" required></select>
+            </div>
+            <div class="form-field">
+              <label for="practiceSubgroup">Подгруппа</label>
+              <input class="field" type="text" id="practiceSubgroup" maxlength="60" placeholder="Например, I подгруппа">
+            </div>
+            <div class="form-field form-field--full">
+              <label for="practiceModule">Модуль <span aria-hidden="true">*</span></label>
+              <input class="field" type="text" id="practiceModule" maxlength="180" required placeholder="ПМ.02 «Название модуля»">
+              <span class="field-error" data-error-for="practiceModule"></span>
+            </div>
+            <div class="form-field form-field--full">
+              <label for="practiceSpecialty">Специальность <span aria-hidden="true">*</span></label>
+              <input class="field" type="text" id="practiceSpecialty" maxlength="180" required placeholder="09.02.07 «Информационные системы и программирование»">
+              <span class="field-error" data-error-for="practiceSpecialty"></span>
+            </div>
+            <div class="form-field form-field--full">
+              <label for="practiceTeacher">Руководитель практики</label>
+              <input class="field" type="text" id="practiceTeacher" maxlength="120" placeholder="Фамилия И. О.">
+            </div>
+            <div class="form-field">
+              <label for="practiceDateStart">Начало периода <span aria-hidden="true">*</span></label>
+              <input class="field" type="date" id="practiceDateStart" required>
+            </div>
+            <div class="form-field">
+              <label for="practiceDateEnd">Окончание периода <span aria-hidden="true">*</span></label>
+              <input class="field" type="date" id="practiceDateEnd" required>
+            </div>
+          </div>
+          <label class="check practice-active"><input type="checkbox" id="practiceActive" checked><span class="check__box" aria-hidden="true"></span><span>Показывать на киоске</span></label>
+          <div class="form-field practice-grid-field">
+            <label>Аудитории по датам и парам</label>
+            <div class="practice-grid-wrap">
+              <table class="table practice-grid">
+                <thead id="practiceGridHead"></thead>
+                <tbody id="practiceGridBody"></tbody>
+              </table>
+            </div>
+            <p class="form-note practice-grid-note">При изменении периода сетка создаётся заново с понедельника по субботу; уже введённые аудитории сохраняются на совпадающих датах.</p>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn--primary" id="practiceSubmit">Сохранить блок</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalRole" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalRoleTitle">
+      <div class="modal__head">
+        <h3 id="modalRoleTitle">Добавить пользователя</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <form id="roleForm" novalidate>
+        <div class="modal__body">
+          <div class="form-field">
+            <label for="roleName">ФИО сотрудника <span aria-hidden="true">*</span></label>
+            <input class="field" type="text" id="roleName" placeholder="Петров Илья Сергеевич" required>
+            <span class="field-error" data-error-for="roleName"></span>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="roleLogin">Логин <span aria-hidden="true">*</span></label>
+              <input class="field" type="text" id="roleLogin" placeholder="petrov" required>
+              <span class="field-error" data-error-for="roleLogin"></span>
+            </div>
+            <div class="form-field">
+              <label for="roleRole">Роль</label>
+              <select class="field" id="roleRole">
+                <option value="admin">Администратор</option>
+                <option value="schedule">Редактор расписания</option>
+                <option value="content">Редактор контента</option>
+              </select>
+            </div>
+          </div>
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Пароль генерируется автоматически и показывается один раз после создания. Передайте его сотруднику лично.</span>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn--primary">Создать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalRoom" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalRoomTitle">
+      <div class="modal__head">
+        <h3 id="modalRoomTitle">Добавить помещение</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <form id="roomForm" novalidate>
+        <div class="modal__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="roomKey">Код помещения <span aria-hidden="true">*</span></label>
+              <input class="field" type="text" id="roomKey" placeholder="305 или stairs-w" required>
+              <span class="field-error" data-error-for="roomKey"></span>
+            </div>
+            <div class="form-field">
+              <label for="roomType">Тип</label>
+              <select class="field" id="roomType">
+                <option value="aud">Учебная аудитория</option>
+                <option value="service">Служба / помещение</option>
+                <option value="stairs">Лестничная клетка</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="roomName">Название <span aria-hidden="true">*</span></label>
+            <input class="field" type="text" id="roomName" placeholder="Аудитория 305" required>
+            <span class="field-error" data-error-for="roomName"></span>
+          </div>
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Код используется в афише для подсветки помещения на карте: латиница, цифры, дефис. Новое помещение появится в центре схемы — перетащите его на нужное место.</span>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn--primary">Добавить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalConfirm" hidden>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal__head">
+        <h3 id="confirmTitle">Подтверждение</h3>
+        <button class="icon-btn" data-close-modal aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="modal__body">
+        <p class="confirm-text" id="confirmText">Удалить запись?</p>
+      </div>
+      <div class="modal__foot">
+        <button type="button" class="btn btn--ghost" data-close-modal>Отмена</button>
+        <button type="button" class="btn btn--danger-soft" id="confirmYes">
+          <svg class="icon"><use href="#i-trash"/></svg>Удалить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/admin.js?v=2"></script>
+</body>
+</html>

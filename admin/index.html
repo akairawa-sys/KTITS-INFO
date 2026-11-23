@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>КТИТС-ИНФО — Вход в панель администратора</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css?v=2">
+</head>
+<body class="auth-body">
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/></symbol>
+  </svg>
+
+  <main class="auth">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <header class="auth-card__head">
+        <img src="../assets/logo.png" alt="Логотип МЦК-КТИТС" class="auth-card__logo">
+        <div>
+          <h1 id="authTitle">Панель администратора</h1>
+          <p>Информационная система «КТИТС-ИНФО»</p>
+        </div>
+      </header>
+
+      <form class="auth-form" id="authForm" novalidate>
+        <div class="form-field">
+          <label for="authLogin">Логин</label>
+          <div class="input-icon">
+            <svg class="icon"><use href="#i-user"/></svg>
+            <input class="field" type="text" id="authLogin" placeholder="admin" autocomplete="username" required>
+          </div>
+          <span class="field-error" data-error-for="authLogin"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="authPassword">Пароль</label>
+          <div class="input-icon">
+            <svg class="icon"><use href="#i-lock"/></svg>
+            <input class="field" type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" required minlength="4">
+            <button type="button" class="input-icon__action" id="togglePassword" aria-label="Показать пароль">
+              <svg class="icon"><use href="#i-eye"/></svg>
+            </button>
+          </div>
+          <span class="field-error" data-error-for="authPassword"></span>
+        </div>
+
+        <div class="auth-form__row">
+          <label class="check">
+            <input type="checkbox" id="authRemember" checked>
+            <span class="check__box" aria-hidden="true"></span>
+            <span>Запомнить меня</span>
+          </label>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">Войти</button>
+        <p class="form-note">Доступ предоставляется только сотрудникам техникума.<br>Данные для первого входа указаны в инструкции проекта.</p>
+      </form>
+
+      <footer class="auth-card__foot">
+        <svg class="icon"><use href="#i-shield"/></svg>
+        <span>Все действия в панели журналируются. В дальнейшем права будут разграничены по ролям.</span>
+      </footer>
+    </section>
+
+    <p class="auth-side">
+      <a class="link-btn link-btn--light" href="../index.html">← Вернуться к киоску</a>
+    </p>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/admin.js?v=2"></script>
+</body>
+</html>
