@@ -4,7 +4,8 @@
   "private": true,
   "description": "Информационный киоск КТИТС-ИНФО",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "build:demo": "node tools/scripts/build_demo.js"
   },
   "dependencies": {
     "react": "^18.3.1",
