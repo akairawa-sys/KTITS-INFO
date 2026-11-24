@@ -331,10 +331,50 @@ function PracticeMode({ practice, bellsWeek, bellsSat, group, setGroup, groupsIn
   );
 }
 
+function ItcubeMode({ lessons, day, setDay, todayIndex }) {
+  const rows = useMemo(
+    () => lessons.filter(lesson => lesson.d === day).sort((a, b) => toMin(a.s) - toMin(b.s)),
+    [lessons, day]
+  );
+  const now = new Date();
+  const isToday = now.getDay() - 1 === day;
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  return (
+    <React.Fragment>
+      <div className="schedule-toolbar"><DaySwitch day={day} todayIndex={todayIndex} onChange={setDay} /></div>
+      <div id="schedList">
+        {rows.length ? (
+          <div className="schedule-grid">
+            {rows.map((lesson, index) => {
+              const isNow = isToday && minutes >= toMin(lesson.s) && minutes < toMin(lesson.e);
+              return (
+                <article key={index} className={`lesson-card${isNow ? ' is-now' : ''}`}>
+                  <div className="lesson-card__body">
+                    <div className="lesson-card__time">{lesson.s} – {lesson.e}</div>
+                    <div className="lesson-row">
+                      <div className="lesson-row__main">
+                        <div className="lesson-row__subject">{lesson.g || lesson.subj || 'Занятие'}</div>
+                        <div className="lesson-row__meta">{lesson.t}</div>
+                      </div>
+                      {lesson.r ? <span className="room-link">{lesson.r}</span> : null}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <EmptyState title="Занятий нет" text="В этот день занятия IT-CUBE не запланированы." />
+        )}
+      </div>
+    </React.Fragment>
+  );
+}
+
 export function ScheduleScreen() {
   const data = useContext(DataContext);
   const params = useParams();
-  const mode = ['group', 'teacher', 'room', 'practice'].includes(params.mode) ? params.mode : 'group';
+  const mode = ['group', 'teacher', 'room', 'practice', 'itcube'].includes(params.mode) ? params.mode : 'group';
   const todayIndex = Math.min(Math.max(new Date().getDay() - 1, 0), 5);
   const [course, setCourse] = useState(1);
   const [group, setGroup] = useState(null);
@@ -345,6 +385,7 @@ export function ScheduleScreen() {
   const [view, setView] = useState('day');
   const schedule = data.SCHEDULE_FULL;
   const practice = Array.isArray(data.PRACTICE) ? data.PRACTICE : [];
+  const itcube = Array.isArray(data.ITCUBE) ? data.ITCUBE : [];
 
   const uniqueTeachers = useMemo(
     () => [...new Set(schedule.lessons.flatMap(lesson => scheduleLines(lesson.teacher)))].sort((a, b) => a.localeCompare(b, 'ru')),
@@ -360,6 +401,7 @@ export function ScheduleScreen() {
     { key: 'teacher', label: 'По преподавателю' },
     { key: 'room', label: 'По аудитории' },
     { key: 'practice', label: 'Учебная практика' },
+    { key: 'itcube', label: 'IT-CUBE' },
   ];
 
   return (
@@ -407,6 +449,9 @@ export function ScheduleScreen() {
             setGroup={setPracticeGroup}
             groupsInfo={schedule.groups}
           />
+        )}
+        {mode === 'itcube' && (
+          <ItcubeMode lessons={itcube} day={day} setDay={setDay} todayIndex={todayIndex} />
         )}
       </div>
     </section>

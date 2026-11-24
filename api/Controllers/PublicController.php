@@ -167,6 +167,17 @@ final class PublicController
             ];
         }
 
+        $itcubeRows = $pdo->query('SELECT day_of_week, start_time, end_time, room, subject, teacher, group_name FROM itcube_lessons ORDER BY day_of_week, start_time, sort_order')->fetchAll();
+        $data['ITCUBE'] = \array_map(static fn ($row) => [
+            'd' => (int)$row['day_of_week'] - 1,
+            's' => \substr($row['start_time'], 0, 5),
+            'e' => \substr($row['end_time'], 0, 5),
+            'r' => $row['room'],
+            'subj' => $row['subject'],
+            't' => $row['teacher'],
+            'g' => $row['group_name'],
+        ], $itcubeRows);
+
         $settings = $pdo->query('SELECT setting_key, setting_value FROM settings')->fetchAll();
         $data['META'] = [];
         foreach ($settings as $setting) {
