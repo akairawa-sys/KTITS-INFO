@@ -27,6 +27,8 @@ async function main() {
   }
 
   const stamp = new Date().toLocaleString('ru-RU');
+  const pad = value => String(value).padStart(2, '0');
+  const stampKey = `${new Date().getFullYear()}${pad(new Date().getMonth() + 1)}${pad(new Date().getDate())}-${pad(new Date().getHours())}${pad(new Date().getMinutes())}${pad(new Date().getSeconds())}`;
   fs.writeFileSync(
     path.join(DOCS, 'js', 'demo-data.js'),
     'window.__STATIC_BOOTSTRAP__=' + JSON.stringify(data) + ';\n'
@@ -52,7 +54,7 @@ async function main() {
   const inject = '  <style>.demo-badge{position:fixed;right:14px;bottom:14px;z-index:9999;padding:8px 16px;'
     + 'border-radius:999px;background:#1d2b53;color:#fff;font:600 13px/1.2 system-ui,sans-serif;opacity:.9;'
     + 'box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none}</style>\n'
-    + '  <script src="js/demo-data.js"></script>\n'
+    + `  <script src="js/demo-data.js?v=${stampKey}"></script>\n`
     + '  <script src="js/demo-shim.js"></script>\n'
     + `  <div class="demo-badge">Демо-версия · данные на ${stamp}</div>\n`;
   const marker = '<script type="module" src="js/dist/app.js';
