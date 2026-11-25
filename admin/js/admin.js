@@ -128,7 +128,7 @@
 
   // КАРКАС ПАНЕЛИ
   const SECTION_TITLES = {
-    schedule: 'Расписание занятий', practice: 'Практика', bells: 'Расписание звонков', teachers: 'Преподаватели',
+    schedule: 'Расписание занятий', practice: 'Практика', bells: 'Расписание звонков', itcube: 'Расписание IT-CUBE', teachers: 'Преподаватели',
     news: 'Новости', events: 'Афиша событий', map: 'Карта этажей', roles: 'Пользователи и роли'
   };
   const loaders = {};
@@ -505,6 +505,106 @@
       await loadBells();
     } catch (error) { toast(error.message); } finally { button.disabled = false; }
   });
+
+  // РАСПИСАНИЕ IT-CUBE
+  let itcubeDay = 1;
+  let itcubeRows = [];
+  let itcubeDirty = false;
+
+  function markItcubeDirty() {
+    itcubeDirty = true;
+    $('#itcubeState').textContent = 'Есть несохранённые изменения';
+    $('#itcubeState').className = 'badge badge--warn';
+  }
+  function markItcubeSaved(message = 'Синхронизировано с киоском') {
+    itcubeDirty = false;
+    $('#itcubeState').textContent = message;
+    $('#itcubeState').className = 'badge badge--ok';
+  }
+
+  function renderItcube() {
+    const body = $('#itcubeBody');
+    if (!itcubeRows.length) {
+      body.innerHTML = '<tr><td colspan="6"><div class="empty"><p class="empty__title">На этот день занятий нет</p><p>Добавьте занятие кнопкой выше.</p></div></td></tr>';
+      return;
+    }
+    body.innerHTML = itcubeRows.map((row, index) => `<tr>
+      <td><div class="time-pair"><input type="time" class="cell-input" data-f="start" value="${escapeAttr(row.start)}" aria-label="Начало занятия ${index + 1}"><input type="time" class="cell-input" data-f="end" value="${escapeAttr(row.end)}" aria-label="Конец занятия ${index + 1}"></div></td>
+      <td><input class="cell-input" data-f="room" style="width:110px" value="${escapeAttr(row.room)}" aria-label="Кабинет, занятие ${index + 1}" placeholder="305"></td>
+      <td><input class="cell-input cell-input--wide" data-f="group" value="${escapeAttr(row.group)}" aria-label="Группа, занятие ${index + 1}" placeholder="239МР"></td>
+      <td><input class="cell-input cell-input--wide" data-f="teacher" value="${escapeAttr(row.teacher)}" aria-label="Преподаватель, занятие ${index + 1}"></td>
+      <td><input class="cell-input cell-input--wide" data-f="subject" value="${escapeAttr(row.subject)}" aria-label="Направление, занятие ${index + 1}"></td>
+      <td class="cell-actions">
+        <button class="icon-btn" data-act="up" aria-label="Поднять выше" ${index === 0 ? 'disabled' : ''}><svg class="icon"><use href="#i-up"/></svg></button>
+        <button class="icon-btn" data-act="down" aria-label="Опустить ниже" ${index === itcubeRows.length - 1 ? 'disabled' : ''}><svg class="icon"><use href="#i-down"/></svg></button>
+        <button class="icon-btn icon-btn--danger" data-act="del" aria-label="Удалить занятие"><svg class="icon"><use href="#i-trash"/></svg></button>
+      </td>
+    </tr>`).join('');
+  }
+
+  async function loadItcube() {
+    $('#itcubeState').textContent = 'Загрузка…';
+    $('#itcubeState').className = 'badge badge--muted';
+    $$('[data-itcubeday]').forEach(button => {
+      const active = Number(button.dataset.itcubeday) === itcubeDay;
+      button.classList.toggle('is-on', active);
+      button.setAttribute('aria-selected', String(active));
+    });
+    const data = await api('admin/itcube', { query: `&day=${itcubeDay}` });
+    itcubeRows = data.rows;
+    itcubeDirty = false;
+    renderItcube();
+    markItcubeSaved();
+  }
+
+  $$('[data-itcubeday]').forEach(button => button.addEventListener('click', () => {
+    const next = Number(button.dataset.itcubeday);
+    if (next === itcubeDay) return;
+    const switchDay = () => { itcubeDay = next; loadItcube().catch(error => toast(error.message)); };
+    if (itcubeDirty) askConfirm('Есть несохранённые изменения. Перейти к другому дню без сохранения?', switchDay);
+    else switchDay();
+  }));
+  $('#itcubeBody').addEventListener('input', event => {
+    const input = event.target.closest('input[data-f]');
+    if (!input) return;
+    const index = Array.from($('#itcubeBody').children).indexOf(input.closest('tr'));
+    if (itcubeRows[index]) {
+      itcubeRows[index][input.dataset.f] = input.value;
+      markItcubeDirty();
+    }
+  });
+  $('#itcubeBody').addEventListener('click', event => {
+    const button = event.target.closest('button[data-act]');
+    if (!button) return;
+    const index = Array.from($('#itcubeBody').children).indexOf(button.closest('tr'));
+    const action = button.dataset.act;
+    if (action === 'up' && index > 0) [itcubeRows[index - 1], itcubeRows[index]] = [itcubeRows[index], itcubeRows[index - 1]];
+    else if (action === 'down' && index < itcubeRows.length - 1) [itcubeRows[index + 1], itcubeRows[index]] = [itcubeRows[index], itcubeRows[index + 1]];
+    else if (action === 'del') itcubeRows.splice(index, 1);
+    else return;
+    renderItcube();
+    markItcubeDirty();
+  });
+  $('#itcubeAddRow').addEventListener('click', () => {
+    if (itcubeRows.length >= 24) return toast('Больше 24 занятий в день быть не может.');
+    const previous = itcubeRows[itcubeRows.length - 1];
+    itcubeRows.push({ start: previous ? previous.end : '14:00', end: previous ? previous.end : '15:30', room: '', group: '', teacher: '', subject: '' });
+    renderItcube();
+    markItcubeDirty();
+    $('#itcubeBody tr:last-child input')?.focus();
+  });
+  $('#itcubeSave').addEventListener('click', async () => {
+    if (itcubeRows.some(row => !row.start || !row.end || row.end <= row.start)) return toast('Проверьте время: конец занятия должен быть позже начала.');
+    if (itcubeRows.some(row => !(row.group || '').trim() && !(row.teacher || '').trim() && !(row.subject || '').trim())) return toast('Заполните группу, преподавателя или направление.');
+    const button = $('#itcubeSave'); button.disabled = true;
+    try {
+      const data = await api('admin/itcube', { method: 'PUT', body: { day: itcubeDay, rows: itcubeRows } });
+      markItcubeSaved('Сохранено · только что');
+      toast(data.message);
+      await loadItcube();
+    } catch (error) { toast(error.message, 6500); } finally { button.disabled = false; }
+  });
+  $('#itcubeReset').addEventListener('click', () => loadItcube().then(() => toast('Загружена версия из базы данных.')).catch(error => toast(error.message)));
 
   // УЧЕБНАЯ ПРАКТИКА
   let practiceCache = [];
@@ -1495,6 +1595,7 @@
   loaders.schedule = loadGroups;
   loaders.practice = loadPractice;
   loaders.bells = loadBells;
+  loaders.itcube = loadItcube;
   loaders.teachers = loadStaff;
   loaders.news = () => loadPosts('news');
   loaders.events = () => loadPosts('events');

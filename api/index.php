@@ -41,6 +41,8 @@ $routes = [
     'PUT admin/schedule' => [ScheduleController::class, 'save'],
     'POST admin/schedule/import' => [ScheduleController::class, 'import'],
     'GET admin/schedule/template' => [ScheduleController::class, 'template'],
+    'GET admin/itcube' => [ScheduleController::class, 'itcubeGet'],
+    'PUT admin/itcube' => [ScheduleController::class, 'itcubeSave'],
 
     'GET admin/practice' => [PracticeController::class, 'get'],
     'POST admin/practice' => [PracticeController::class, 'create'],

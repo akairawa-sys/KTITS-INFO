@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin.css?v=2">
+  <link rel="stylesheet" href="css/admin.css?v=3">
 </head>
 <body>
   <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -63,6 +63,9 @@
         </button>
         <button class="nav-item" data-section="bells" data-role="schedule">
           <svg class="icon"><use href="#i-alarm"/></svg>Расписание звонков
+        </button>
+        <button class="nav-item" data-section="itcube" data-role="schedule">
+          <svg class="icon"><use href="#i-calendar"/></svg>IT-CUBE
         </button>
         <button class="nav-item" data-section="teachers" data-role="content">
           <svg class="icon"><use href="#i-teacher"/></svg>Преподаватели
@@ -291,6 +294,64 @@
               <svg class="icon"><use href="#i-check"/></svg>Сохранить звонки
             </button>
             <button class="btn btn--ghost" id="bellsDefault">Вернуть стандартные</button>
+          </div>
+        </section>
+
+        <section class="section" id="section-itcube" aria-labelledby="itcubeHeadTitle">
+          <div class="section__head">
+            <div>
+              <h2 id="itcubeHeadTitle">Расписание IT-CUBE</h2>
+              <p>Занятия центра «IT-КУБ». Редактируется по дням недели, после сохранения сразу появляется на киоске во вкладке IT-CUBE. Кабинет «коворкинг» на карте киоска открывает библиотеку.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div class="tabs" role="tablist" aria-label="День недели">
+                <button class="tab is-on" data-itcubeday="1" role="tab" aria-selected="true">Понедельник</button>
+                <button class="tab" data-itcubeday="2" role="tab" aria-selected="false">Вторник</button>
+                <button class="tab" data-itcubeday="3" role="tab" aria-selected="false">Среда</button>
+                <button class="tab" data-itcubeday="4" role="tab" aria-selected="false">Четверг</button>
+                <button class="tab" data-itcubeday="5" role="tab" aria-selected="false">Пятница</button>
+                <button class="tab" data-itcubeday="6" role="tab" aria-selected="false">Суббота</button>
+              </div>
+              <button class="btn btn--ghost btn--sm" id="itcubeAddRow">
+                <svg class="icon"><use href="#i-plus"/></svg>Добавить занятие
+              </button>
+            </div>
+            <div class="card__body">
+              <div class="toolbar" role="group" aria-label="Состояние расписания IT-CUBE">
+                <div class="toolbar__spacer"></div>
+                <span class="badge badge--muted" id="itcubeState">Загрузка данных…</span>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <caption class="sr-only">Редактируемое расписание IT-CUBE на день</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Время</th>
+                    <th scope="col">Кабинет</th>
+                    <th scope="col">Группа</th>
+                    <th scope="col">Преподаватель</th>
+                    <th scope="col">Направление</th>
+                    <th scope="col"><span class="sr-only">Действия</span></th>
+                  </tr>
+                </thead>
+                <tbody id="itcubeBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="hint">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <span>Стрелки меняют порядок строк, значок корзины удаляет занятие. Достаточно заполнить группу, преподавателя или направление. После правок нажмите «Сохранить», чтобы изменения ушли на киоск.</span>
+          </div>
+          <div class="section__actions">
+            <button class="btn btn--dark" id="itcubeSave">
+              <svg class="icon"><use href="#i-check"/></svg>Сохранить расписание
+            </button>
+            <button class="btn btn--ghost" id="itcubeReset">Отменить изменения</button>
           </div>
         </section>
 
@@ -914,6 +975,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="js/admin.js?v=2"></script>
+  <script src="js/admin.js?v=3"></script>
 </body>
 </html>

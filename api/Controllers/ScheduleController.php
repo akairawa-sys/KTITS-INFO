@@ -254,4 +254,70 @@ final class ScheduleController
         echo $csv;
         exit;
     }
+
+    public function itcubeGet(): void
+    {
+        Auth::require('schedule');
+        $day = Validator::id($_GET['day'] ?? 0);
+        if ($day > 6) {
+            Http::error('День недели должен быть от 1 до 6.');
+        }
+        $stmt = $this->pdo()->prepare('SELECT id, start_time, end_time, room, subject, teacher, group_name FROM itcube_lessons WHERE day_of_week = ? ORDER BY start_time, sort_order');
+        $stmt->execute([$day]);
+        Http::json(['ok' => true, 'rows' => \array_map(static fn ($row) => [
+            'id' => (int)$row['id'],
+            'start' => \substr($row['start_time'], 0, 5),
+            'end' => \substr($row['end_time'], 0, 5),
+            'room' => $row['room'], 'subject' => $row['subject'],
+            'teacher' => $row['teacher'], 'group' => $row['group_name'],
+        ], $stmt->fetchAll())]);
+    }
+
+    public function itcubeSave(): void
+    {
+        Auth::require('schedule');
+        Auth::requireCsrf();
+        $input = Http::input();
+        $day = Validator::id($input['day'] ?? 0);
+        if ($day > 6) {
+            Http::error('День недели должен быть от 1 до 6.');
+        }
+        $rows = $input['rows'] ?? null;
+        if (!\is_array($rows) || \count($rows) > 24) {
+            Http::error('Передайте не более 24 занятий.');
+        }
+        $prepared = [];
+        foreach (\array_values($rows) as $row) {
+            if (!\is_array($row)) {
+                Http::error('Некорректная строка расписания.');
+            }
+            $start = Validator::time((string)($row['start'] ?? ''));
+            $end = Validator::time((string)($row['end'] ?? ''));
+            if (\strtotime($end) <= \strtotime($start)) {
+                Http::error('Время окончания занятия должно быть позже времени начала.');
+            }
+            $prepared[] = [
+                'start' => $start, 'end' => $end,
+                'room' => Validator::clean($row['room'] ?? '', 60),
+                'subject' => Validator::clean($row['subject'] ?? '', 255),
+                'teacher' => Validator::clean($row['teacher'] ?? '', 255),
+                'group' => Validator::clean($row['group'] ?? '', 120),
+            ];
+        }
+        $pdo = $this->pdo();
+        $pdo->beginTransaction();
+        try {
+            $pdo->prepare('DELETE FROM itcube_lessons WHERE day_of_week = ?')->execute([$day]);
+            $insert = $pdo->prepare('INSERT INTO itcube_lessons (day_of_week, start_time, end_time, room, subject, teacher, group_name, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+            foreach ($prepared as $index => $row) {
+                $insert->execute([$day, $row['start'], $row['end'], $row['room'], $row['subject'], $row['teacher'], $row['group'], $index]);
+            }
+            $pdo->commit();
+        } catch (\Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
+        }
+        Auth::log('save', 'itcube', (string)$day, ['rows' => \count($rows)]);
+        Http::json(['ok' => true, 'message' => 'Расписание IT-CUBE сохранено и уже доступно на киоске.']);
+    }
 }

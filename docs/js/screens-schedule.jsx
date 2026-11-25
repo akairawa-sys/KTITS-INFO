@@ -31,19 +31,22 @@ function isNowPair(pair, day, bellsWeek, bellsSat) {
   return minutes >= toMin(bell.start) && minutes < toMin(bell.end);
 }
 
-function RoomLink({ room }) {
+function RoomLink({ room, target }) {
   const { navigate } = useContext(UIContext);
   if (!room) return null;
-  const known = window.KioskMap && window.KioskMap.findRoom && window.KioskMap.findRoom(room);
+  const roomKey = target || room;
+  const known = window.KioskMap && window.KioskMap.findRoom && window.KioskMap.findRoom(roomKey);
   if (!known) return <span className="room-link">{room}</span>;
   return (
     <button
       className="room-link"
       title="Показать на карте"
-      onClick={() => { window.__kioskPendingRoom = room; navigate('/map'); }}
+      onClick={() => { window.__kioskPendingRoom = roomKey; navigate('/map'); }}
     >{room}</button>
   );
 }
+
+const ITCUBE_ROOM_ALIAS = { 'коворкинг': 'lib' };
 
 function DaySwitch({ day, todayIndex, onChange }) {
   return (
@@ -356,7 +359,7 @@ function ItcubeMode({ lessons, day, setDay, todayIndex }) {
                         <div className="lesson-row__subject">{lesson.g || lesson.subj || 'Занятие'}</div>
                         <div className="lesson-row__meta">{lesson.t}</div>
                       </div>
-                      {lesson.r ? <span className="room-link">{lesson.r}</span> : null}
+                      {lesson.r ? <RoomLink room={lesson.r} target={ITCUBE_ROOM_ALIAS[lesson.r] || lesson.r} /> : null}
                     </div>
                   </div>
                 </article>
